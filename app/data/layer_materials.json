@@ -1,0 +1,32 @@
+{
+  "_units": {
+    "p_o2": "oxygen permeability, cc·µm / m²·day·atm at 23 °C, 0 % RH",
+    "p_w": "water-vapour permeability, g·µm / m²·day at 38 °C, 90 % RH",
+    "otr_fixed / wvtr_fixed": "transmission of a coated, metallised or foil layer, independent of thickness",
+    "beta": "CO2 : O2 permeability ratio",
+    "density": "g/cm³",
+    "price": "INR per kg of film (indicative)",
+    "co2e": "kg CO2e per kg (cradle to gate, indicative)"
+  },
+  "LDPE": {"name": "LDPE", "long": "Low-density polyethylene", "family": "PE", "density": 0.92, "p_o2": 195000, "p_w": 400, "beta": 4.5, "price": 115, "co2e": 1.9},
+  "LLDPE": {"name": "LLDPE", "long": "Linear low-density polyethylene", "family": "PE", "density": 0.92, "p_o2": 175000, "p_w": 375, "beta": 4.5, "price": 118, "co2e": 1.9},
+  "HDPE": {"name": "HDPE", "long": "High-density polyethylene", "family": "PE", "density": 0.95, "p_o2": 65000, "p_w": 150, "beta": 4.0, "price": 112, "co2e": 1.8},
+  "CPP": {"name": "CPP", "long": "Cast polypropylene", "family": "PP", "density": 0.90, "p_o2": 95000, "p_w": 250, "beta": 3.5, "price": 125, "co2e": 1.7},
+  "BOPP": {"name": "BOPP", "long": "Biaxially oriented polypropylene", "family": "PP", "density": 0.905, "p_o2": 40000, "p_w": 130, "beta": 3.5, "price": 150, "co2e": 1.9},
+  "PET": {"name": "PET", "long": "Polyester (BOPET)", "family": "PET", "density": 1.39, "p_o2": 1500, "p_w": 500, "beta": 4.5, "price": 125, "co2e": 2.9},
+  "PA": {"name": "Nylon", "long": "Polyamide 6 (BOPA)", "family": "PA", "density": 1.15, "p_o2": 600, "p_w": 3900, "beta": 3.5, "price": 300, "co2e": 8.0},
+  "EVOH": {"name": "EVOH", "long": "Ethylene vinyl alcohol", "family": "EVOH", "density": 1.19, "p_o2": 10, "p_w": 1500, "beta": 3.0, "price": 600, "co2e": 4.0},
+  "ALU": {"name": "Aluminium foil", "long": "Aluminium foil", "family": "ALU", "density": 2.70, "otr_fixed": 0.05, "wvtr_fixed": 0.05, "beta": 1.0, "price": 380, "co2e": 10.0},
+  "METPET": {"name": "Metallised PET", "long": "Vacuum-metallised polyester", "family": "MET", "density": 1.39, "otr_fixed": 1.2, "wvtr_fixed": 1.0, "beta": 4.0, "price": 145, "co2e": 3.1},
+  "METBOPP": {"name": "Metallised BOPP", "long": "Vacuum-metallised BOPP", "family": "MET", "density": 0.905, "otr_fixed": 30, "wvtr_fixed": 0.7, "beta": 3.5, "price": 170, "co2e": 2.1},
+  "ALOXBOPP": {"name": "AlOx-coated BOPP", "long": "Aluminium-oxide coated BOPP (transparent barrier)", "family": "OXIDE", "density": 0.905, "otr_fixed": 4.0, "wvtr_fixed": 1.5, "beta": 3.5, "price": 210, "co2e": 2.1},
+  "PLA": {"name": "PLA", "long": "Polylactic acid", "family": "BIO", "density": 1.25, "p_o2": 15000, "p_w": 7500, "beta": 7.0, "price": 350, "co2e": 2.2},
+  "PBAT": {"name": "PBAT-PLA sealant", "long": "Compostable PBAT/PLA blend", "family": "BIO", "density": 1.25, "p_o2": 40000, "p_w": 10000, "beta": 8.0, "price": 320, "co2e": 3.0},
+  "CELLO": {"name": "Coated cellulose", "long": "Barrier-coated cellulose film", "family": "BIO", "density": 1.44, "otr_fixed": 3.0, "wvtr_fixed": 12.0, "beta": 4.0, "price": 600, "co2e": 3.5},
+  "METCELLO": {"name": "Metallised cellulose", "long": "Metallised cellulose film", "family": "BIO", "density": 1.44, "otr_fixed": 2.0, "wvtr_fixed": 5.0, "beta": 4.0, "price": 680, "co2e": 3.7},
+  "KRAFT": {"name": "Kraft paper", "long": "Kraft paper", "family": "PAPER", "density": 0.78, "otr_fixed": 1000000, "wvtr_fixed": 3000, "beta": 1.0, "price": 70, "co2e": 1.1},
+  "BOARD": {"name": "Paperboard", "long": "Liquid packaging board", "family": "PAPER", "density": 0.80, "otr_fixed": 1000000, "wvtr_fixed": 3000, "beta": 1.0, "price": 78, "co2e": 1.2},
+  "PVC": {"name": "PVC stretch", "long": "Plasticised PVC stretch film", "family": "PVC", "density": 1.25, "p_o2": 144000, "p_w": 3600, "beta": 6.0, "price": 130, "co2e": 2.4},
+  "WOVENPP": {"name": "Woven PP fabric", "long": "Woven polypropylene fabric", "family": "WOVEN", "density": 0.60, "otr_fixed": 1000000, "wvtr_fixed": 5000, "beta": 1.0, "price": 130, "co2e": 1.9},
+  "MESH": {"name": "Leno mesh", "long": "PP/HDPE leno mesh", "family": "WOVEN", "density": 0.25, "otr_fixed": 1000000, "wvtr_fixed": 50000, "beta": 1.0, "price": 140, "co2e": 1.9}
+}

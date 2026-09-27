@@ -1,0 +1,7 @@
+.venv
+tests
+parat.db
+__pycache__
+*.pyc
+requirements-dev.txt
+app/train.py
