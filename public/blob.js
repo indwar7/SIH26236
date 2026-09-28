@@ -39,8 +39,8 @@ export function mountBlob(canvas, opts = {}) {
       const front = (z3 / (d || 1) + 1) / 2;
       const a = 0.12 + 0.88 * Math.min(1, rim * 1.3) * (0.45 + 0.55 * front);
       if (a < 0.06) continue;
-      const g = 110 + 110 * rim, b = 20 + 50 * rim * rim;
-      ctx.fillStyle = `rgba(255,${g | 0},${b | 0},${a.toFixed(3)})`;
+      const g = 95 + 55 * rim, b = 10 + 20 * rim;
+      ctx.fillStyle = `rgba(236,${g | 0},${b | 0},${a.toFixed(3)})`;
       const sz = 0.7 + 1.6 * s * (0.4 + rim * 0.6);
       ctx.fillRect(px, py, sz, sz);
     }
