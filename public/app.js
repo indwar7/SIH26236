@@ -108,6 +108,28 @@ function splitWords(el, offset = 0) {
   el.querySelectorAll("em").forEach((e) => e.classList.add("split"));
 }
 
+/* ---------------- live examples ---------------- */
+const EXAMPLES = ["potato-chips", "paneer", "broccoli", "edible-oil", "wheat-flour", "bulk-grain"];
+async function loadExamples(box) {
+  try {
+    const res = await Promise.all(EXAMPLES.map((id) => api("/api/recommend", { commodity_id: id })));
+    if (!box.isConnected) return;
+    box.innerHTML = res.map((r) => {
+      const p = r.profile, c = r.candidates[0];
+      const w = p.pack_g >= 1000 ? `${num(p.pack_g / 1000)} kg` : `${num(p.pack_g)} g`;
+      return `<a class="card example" href="#/brief/${esc(p.id)}">
+        <span class="muted small">${esc(p.name)}, ${w}, ${esc(p.storage)} at ${num(p.temp)} °C</span>
+        ${miniHTML(c.layers)}
+        <b>${esc(c.structure)}</b>
+        <span class="ex-facts"><span><em>${Math.round(c.shelf_life.days)}</em> days</span><span><em>${rupee(c.cost.per_pack)}</em> a pack</span></span>
+        <span class="muted small">${esc(c.applied_mode_label)}. ${esc(c.recyclability.label)}.</span>
+      </a>`;
+    }).join("");
+  } catch (e) {
+    box.innerHTML = `<p class="error">The examples did not load. ${esc(e.message)}</p>`;
+  }
+}
+
 /* ---------------- intro ---------------- */
 const INTRO = [
   { a: "Food Spoils", b: "In The Wrong Pack", p: "Chips go soft, oil turns rancid, greens wilt. Most of it comes down to how much oxygen and water vapour get through the film.", amp: 0.1 },
@@ -201,6 +223,82 @@ async function startScreen() {
       ${stackHTML(SAMPLE, { outside: "air, light, humidity", inside: "sealed against the product", otr: 0.05, wvtr: 0.05 })}
     </figure>
   </section>
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow"><i></i>The problem</p>
+      <h2 class="title">The Wrong Film <em>Costs More Than The Right One</em></h2>
+      <p class="lede">Packaging is usually picked by habit or by what the local supplier stocks. When the film does not match the food, the losses show up weeks later on the shelf.</p>
+    </div>
+    <div class="cards cards-4">
+      <article class="card"><h3 class="h3">Moisture gain</h3><p class="muted">Chips, biscuits and milk powder pick up water through the film and turn soft or cake together.</p></article>
+      <article class="card"><h3 class="h3">Oxidation</h3><p class="muted">Oxygen reaching oils, nuts, ghee and coffee turns the fat rancid long before the date on the pack.</p></article>
+      <article class="card"><h3 class="h3">Suffocation or wilting</h3><p class="muted">Fruit and vegetables keep breathing. A sealed bag makes them ferment; an open one lets them dry out.</p></article>
+      <article class="card"><h3 class="h3">Over-packaging</h3><p class="muted">Foil laminates on foods that do not need them add cost and create waste that cannot be recycled.</p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow"><i></i>What you get</p>
+      <h2 class="title">A Full Packaging <em>Specification</em></h2>
+      <p class="lede">Every recommendation comes with the numbers a converter or film supplier asks for.</p>
+    </div>
+    <dl class="cards cards-3 specs">
+      <div class="card"><dt>Oxygen transmission (OTR)</dt><dd>The highest OTR the food can tolerate, and what each film delivers, in cc/m²·day·atm.</dd></div>
+      <div class="card"><dt>Water-vapour transmission (WVTR)</dt><dd>The moisture barrier needed for your temperature and humidity, in g/m²·day.</dd></div>
+      <div class="card"><dt>Structure and thickness</dt><dd>Each layer of the laminate, with the sealant sized for your pack weight.</dd></div>
+      <div class="card"><dt>Seal and strength</dt><dd>Sealing temperature, seal strength, tensile strength and puncture resistance for your transport route.</dd></div>
+      <div class="card"><dt>Modified atmosphere</dt><dd>Whether MAP suits the product, and the oxygen, carbon dioxide and nitrogen mix to use.</dd></div>
+      <div class="card"><dt>Shelf life, cost and footprint</dt><dd>Predicted shelf life, cost per pack and per 1,000 packs, carbon footprint and end of life.</dd></div>
+    </dl>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow"><i></i>Live examples</p>
+      <h2 class="title">Six Foods, <em>Six Different Packs</em></h2>
+      <p class="lede">Calculated just now by the engine at typical storage conditions. Open any one to see the full reasoning.</p>
+    </div>
+    <div class="cards cards-3" id="examples"><p class="muted">Calculating examples...</p></div>
+  </section>
+
+  <section class="section split-2">
+    <div>
+      <p class="eyebrow"><i></i>Fresh produce</p>
+      <h2 class="title" style="margin-top:16px">Packs That <em>Breathe</em></h2>
+    </div>
+    <div class="prose">
+      <p>A harvested mango or a head of broccoli is still alive. It takes in oxygen and gives out carbon dioxide, and it does so faster the warmer it is.</p>
+      <p>Parat calculates the respiration rate at your storage temperature, then finds the film permeability at which the pack settles to the oxygen and carbon dioxide levels that slow ripening without making the produce ferment.</p>
+      <p>When no plain film is permeable enough, it works out how many laser micro-perforations to add per pack. Crops such as onion and potato, which need dry moving air, get vented bags or leno mesh instead.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow"><i></i>Who it is for</p>
+      <h2 class="title">Packaging Expertise <em>Without The Consultant</em></h2>
+    </div>
+    <div class="cards cards-4">
+      <article class="card"><h3 class="h3">Farmers and FPOs</h3><p class="muted">Choose bags for grain, onions and fresh produce that cut storage and transport losses.</p></article>
+      <article class="card"><h3 class="h3">Small food manufacturers</h3><p class="muted">Match snacks, spices, pickles and dairy to a film that holds the shelf life you print.</p></article>
+      <article class="card"><h3 class="h3">Startups</h3><p class="muted">Compare cost and recyclability before placing a minimum order with a converter.</p></article>
+      <article class="card"><h3 class="h3">Researchers and students</h3><p class="muted">See how OTR, WVTR and respiration combine, with every calculation shown.</p></article>
+    </div>
+  </section>
+
+  <section class="section split-2">
+    <div>
+      <p class="eyebrow"><i></i>Sustainability</p>
+      <h2 class="title" style="margin-top:16px">Recyclable Options <em>First</em></h2>
+    </div>
+    <div class="prose">
+      <p>Multilayer laminates of PET, foil and polyethylene cannot be separated and end up in co-processing or landfill. Parat shows recyclability and carbon footprint beside every option.</p>
+      <p>Where the barrier allows, it suggests mono-material alternatives such as all-polypropylene metallised films and polyethylene-EVOH laminates, and compostable cellulose and PLA films for short shelf lives.</p>
+      <p>Switch the ranking to "Most sustainable" on any result to put these first.</p>
+    </div>
+  </section>
+
   <section class="picker" aria-labelledby="pick-h">
     <div class="picker-head">
       <h2 class="title" id="pick-h" style="scroll-margin-top:100px">Choose A <em>Commodity</em></h2>
@@ -215,6 +313,25 @@ async function startScreen() {
 
   splitWords(view.querySelector(".split-me"));
   mountBlob(view.querySelector(".hero-art .blob"), { amp: 0.17 });
+  view.insertAdjacentHTML("beforeend", `
+  <section class="section split-2">
+    <div>
+      <p class="eyebrow"><i></i>Questions</p>
+      <h2 class="title" style="margin-top:16px">Before You <em>Order Film</em></h2>
+    </div>
+    <div class="faq">
+      <details><summary>Where do the barrier values come from?</summary><p>They are typical values from published film datasheets and packaging references. Barrier through a laminate is calculated layer by layer. Your supplier's datasheet replaces them.</p></details>
+      <details><summary>How is shelf life predicted?</summary><p>From the moisture the food can gain or lose, the oxygen it can absorb before it turns rancid, and how fast it spoils at your temperature. Confirm it with a storage trial before printing a date.</p></details>
+      <details><summary>What does the machine learning model do?</summary><p>A random forest ranks the structures that pass the engineering checks. It was trained on 6,000 simulated cases labelled by the engine, because no public dataset of packaging decisions exists yet.</p></details>
+      <details><summary>My product is not in the list.</summary><p>Choose "My product is not listed" and enter its moisture, fat, pH and storage. Parat matches it to the closest known commodity.</p></details>
+      <details><summary>What is the QR label for?</summary><p>It records the product, pack structure, batch and best-before date, signed so anyone who scans it can check it has not been altered.</p></details>
+    </div>
+  </section>
+  <footer class="foot">
+    <span class="brand"><span class="brand-dot" aria-hidden="true"></span>parat</span>
+    <p class="muted small">Parat means layer. Built for Smart India Hackathon, problem statement SIH26236.</p>
+  </footer>`);
+  loadExamples(view.querySelector("#examples"));
   const grid = view.querySelector("#grid");
   let cat = "", q = "";
   const meta = (c) => c.form === "produce"
