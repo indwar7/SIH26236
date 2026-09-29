@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from . import db, trace
-from .engine import core
+from .engine import core, diagnose as dx
 from .engine.ml import ForestModel
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -88,6 +88,34 @@ def _expand(payload: dict) -> dict:
         "secondary": result["requirements"]["secondary"],
         "pack": cand,
     }
+
+
+class EvaluateIn(BaseModel):
+    brief: RecommendIn
+    current: Literal[tuple(dx.CURRENT_PACKS)]
+
+
+class DiagnoseIn(EvaluateIn):
+    symptom: Literal[tuple(dx.SYMPTOMS)]
+    lasted_days: Optional[float] = Field(None, ge=0, le=1500)
+
+
+@app.get("/api/current-packs")
+def current_packs():
+    return {"packs": [{"id": k, "label": v[1]} for k, v in dx.CURRENT_PACKS.items()],
+            "symptoms": [{"id": k, "label": v} for k, v in dx.SYMPTOMS.items()]}
+
+
+@app.post("/api/evaluate")
+def evaluate(body: EvaluateIn):
+    sid, label = dx.CURRENT_PACKS[body.current]
+    ev = dx.evaluate_one(body.brief.model_dump(), DATA, sid, dx.GAUGE_UM.get(body.current))
+    return {"label": label, "pack": ev["pack"]}
+
+
+@app.post("/api/diagnose")
+def diagnose(body: DiagnoseIn):
+    return dx.diagnose(body.brief.model_dump(), DATA, body.current, body.symptom, body.lasted_days, MODEL)
 
 
 @app.post("/api/records")
